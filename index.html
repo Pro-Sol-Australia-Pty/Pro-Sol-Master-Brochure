@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pro-Sol Flipbook</title>
+    <style>
+      body {
+        margin: 0;
+        background: #222;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      .book {
+        width: 100%;
+        height: 85vh;
+        position: relative;
+        perspective: 2000px;
+        transform: scale(0.9);
+        transform-origin: top center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        justify-content: center;
+        display: flex;
+        margin: 0;
+      }
+
+      .page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        background: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        transform-origin: left;
+        transition: transform 1.2s;
+        user-select: none;
+        outline: none;
+      }
+
+      .page img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+
+      .flipped {
+        transform: rotateY(-180deg);
+        z-index: 0;
+      }
+
+      .page:not(.flipped) {
+        z-index: 1;
+      }
+
+      #thumbnail-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        width: 95%;
+        margin-top: 10px;
+      }
+
+      #thumbnails {
+        display: flex;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        white-space: nowrap;
+        max-width: 80%;
+        justify-content: flex-start;
+      }
+
+      #thumbnails img {
+        width: 60px;
+        height: auto;
+        margin: 0 4px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        flex-shrink: 0;
+      }
+
+      #thumbnails img:hover {
+        border-color: #0f0;
+      }
+
+      .thumb-button {
+        background: #444;
+        color: #fff;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 4px 12px;
+      }
+
+      .active-thumb {
+        border-color: #0f0 !important;
+        box-shadow: 0 0 5px #0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="book" id="book">
+      <!-- Example page stack (replace/add as needed) -->
+      <div class="page" style="z-index: 48">
+        <img src="page_1.jpg" alt="Page 1" />
+      </div>
+      <div class="page" style="z-index: 47">
+        <img src="page_2.jpg" alt="Page 2" />
+      </div>
+      <div class="page" style="z-index: 46">
+        <img src="page_3.jpg" alt="Page 3" />
+      </div>
+      <div class="page" style="z-index: 45">
+        <img src="page_4.jpg" alt="Page 4" />
+      </div>
+      <div class="page" style="z-index: 44">
+        <img src="page_5.jpg" alt="Page 5" />
+      </div>
+      <div class="page" style="z-index: 43">
+        <img src="page_6.jpg" alt="Page 6" />
+      </div>
+      <div class="page" style="z-index: 42">
+        <img src="page_7.jpg" alt="Page 7" />
+      </div>
+      <div class="page" style="z-index: 41">
+        <img src="page_8.jpg" alt="Page 8" />
+      </div>
+      <div class="page" style="z-index: 40">
+        <img src="page_9.jpg" alt="Page 9" />
+      </div>
+      <div class="page" style="z-index: 39">
+        <img src="page_10.jpg" alt="Page 10" />
+      </div>
+      <div class="page" style="z-index: 38">
+        <img src="page_11.jpg" alt="Page 11" />
+      </div>
+      <div class="page" style="z-index: 37">
+        <img src="page_12.jpg" alt="Page 12" />
+      </div>
+      <div class="page" style="z-index: 36">
+        <img src="page_13.jpg" alt="Page 13" />
+      </div>
+      <div class="page" style="z-index: 35">
+        <img src="page_14.jpg" alt="Page 14" />
+      </div>
+      <div class="page" style="z-index: 34">
+        <img src="page_15.jpg" alt="Page 15" />
+      </div>
+      <div class="page" style="z-index: 33">
+        <img src="page_16.jpg" alt="Page 16" />
+      </div>
+      <div class="page" style="z-index: 32">
+        <img src="page_17.jpg" alt="Page 17" />
+      </div>
+      <div class="page" style="z-index: 31">
+        <img src="page_18.jpg" alt="Page 18" />
+      </div>
+      <div class="page" style="z-index: 30">
+        <img src="page_19.jpg" alt="Page 19" />
+      </div>
+      <div class="page" style="z-index: 29">
+        <img src="page_20.jpg" alt="Page 20" />
+      </div>
+      <div class="page" style="z-index: 28">
+        <img src="page_21.jpg" alt="Page 21" />
+      </div>
+      <div class="page" style="z-index: 27">
+        <img src="page_22.jpg" alt="Page 22" />
+      </div>
+      <div class="page" style="z-index: 26">
+        <img src="page_23.jpg" alt="Page 23" />
+      </div>
+      <div class="page" style="z-index: 25">
+        <img src="page_24.jpg" alt="Page 24" />
+      </div>
+    </div>
+
+    <div id="thumbnail-wrapper">
+      <button id="thumbLeft" class="thumb-button">&#9664;</button>
+      <div id="thumbnails"></div>
+      <button id="thumbRight" class="thumb-button">&#9654;</button>
+    </div>
+
+    <script>
+      const pages = document.querySelectorAll(".page");
+      const thumbContainer = document.getElementById("thumbnails");
+      let current = 0;
+
+      function updatePages() {
+        pages.forEach((page, i) => {
+          if (i < current) {
+            page.classList.add("flipped");
+          } else {
+            page.classList.remove("flipped");
+          }
+        });
+
+        const highlightIndex =
+          current >= pages.length ? pages.length - 1 : current;
+        const thumbs = document.querySelectorAll("#thumbnails img");
+
+        thumbs.forEach((thumb, i) => {
+          const isActive = i === highlightIndex;
+          thumb.classList.toggle("active-thumb", isActive);
+          if (isActive) {
+            setTimeout(() => {
+              thumb.scrollIntoView({
+                behavior: "smooth",
+                inline: "center",
+                block: "nearest",
+              });
+            }, 50);
+          }
+        });
+      }
+
+      document.body.addEventListener("click", (e) => {
+        const half = window.innerWidth / 2;
+        if (e.clientY < window.innerHeight - 120) {
+          if (e.clientX > half && current < pages.length) {
+            current++;
+          } else if (e.clientX <= half && current > 0) {
+            current--;
+          }
+          updatePages();
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" && current < pages.length) {
+          current++;
+        } else if (e.key === "ArrowLeft" && current > 0) {
+          current--;
+        }
+        updatePages();
+      });
+
+      pages.forEach((_, i) => {
+        const thumb = document.createElement("img");
+        thumb.src = `page_${i + 1}.jpg`;
+        thumb.alt = `Page ${i + 1}`;
+        thumb.onclick = () => {
+          current = i;
+          updatePages();
+        };
+        thumbContainer.appendChild(thumb);
+      });
+
+      document.getElementById("thumbLeft").onclick = () => {
+        thumbContainer.scrollBy({ left: -200, behavior: "smooth" });
+      };
+      document.getElementById("thumbRight").onclick = () => {
+        thumbContainer.scrollBy({ left: 200, behavior: "smooth" });
+      };
+
+      updatePages();
+    </script>
+  </body>
+</html>
